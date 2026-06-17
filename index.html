@@ -2,1000 +2,1007 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our 6 Months Mystery</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ASAD.OS // Mobile Terminal</title>
     <style>
         :root {
-            --bg-beige: #F9F6F0;
-            --card-beige: #F1EAE0;
-            --text-dark: #3E2723;
-            --text-muted: #795548;
-            --accent-brown: #5D4037;
-            --premium-glass: rgba(255, 255, 255, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --error-red: #D32F2F;
+            --bg-color: #05070a;
+            --primary: #00ffcc;
+            --primary-glow: rgba(0, 255, 204, 0.3);
+            --accent: #ff0055;
+            --accent-glow: rgba(255, 0, 85, 0.4);
+            --panel-bg: rgba(10, 15, 26, 0.85);
+            --panel-border: rgba(0, 255, 204, 0.2);
+            --text-main: #e2e8f0;
+            --text-muted: #64748b;
+            --font: 'Courier New', Courier, monospace;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
         }
 
-        body {
-            background-color: var(--bg-beige);
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-            transition: background-color 0.5s ease, color 0.5s ease;
+        body, html {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
         }
 
-        /* Premium Smooth Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Mobile Optimization Screen Overlay */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+            z-index: 99999;
+            opacity: 0.6;
+            pointer-events: none;
+            background-size: 100% 3px;
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
-        }
-
-        @keyframes pulseRed {
-            0%, 100% { background-color: #5A1818; }
-            50% { background-color: #8B1E1E; }
-        }
-
-        /* Layout Container */
-        .app-container {
-            width: 100%;
-            max-width: 500px;
-            padding: 30px 24px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* Screen Wrapper Setup */
         .screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
             display: none;
-            width: 100%;
-            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            text-align: center;
+            padding: 15px;
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .screen.active {
             display: flex;
+            opacity: 1;
         }
 
-        /* Typography Styling */
-        h1, h2, h3 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            margin-bottom: 16px;
-            line-height: 1.3;
+        /* Mobile Glassmorphism Panel */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            padding: 24px 16px;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            position: relative;
         }
 
-        p {
-            font-size: 16px;
-            line-height: 1.6;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            white-space: pre-line;
-        }
-
-        /* Glassmorphic Buttons */
+        /* Thumb-friendly Premium Buttons */
         .btn {
-            background: var(--premium-glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
             padding: 14px 28px;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-dark);
-            border-radius: 30px;
+            font-family: var(--font);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 4px 16px rgba(93, 64, 55, 0.05);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            margin: 8px 4px;
-            min-width: 140px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.65);
-            box-shadow: 0 6px 20px rgba(93, 64, 55, 0.1);
+            border-radius: 6px;
+            margin-top: 16px;
+            width: 100%;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px var(--primary-glow);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn:active {
-            transform: translateY(1px);
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 20px var(--primary);
         }
 
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 100%;
-            margin-top: 16px;
+        /* Mobile Bean Tracker */
+        #bean-counter-global {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            background: rgba(5, 7, 10, 0.9);
+            border: 1px solid var(--primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--primary);
+            z-index: 10000;
+            box-shadow: 0 0 10px var(--primary-glow);
+            display: none;
         }
 
-        /* Inputs */
-        .input-field {
-            width: 100%;
-            padding: 16px 20px;
-            border-radius: 24px;
-            border: 1px solid rgba(93, 64, 55, 0.15);
-            background: rgba(255, 255, 255, 0.7);
-            font-size: 16px;
-            outline: none;
-            text-align: center;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-            transition: all 0.3s;
-            letter-spacing: 1px;
-        }
-
-        .input-field:focus {
-            border-color: var(--accent-brown);
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(93, 64, 55, 0.08);
-        }
-
-        /* Unique Screens / States Styling */
-        .shake-active {
-            animation: shake 0.4s ease-in-out;
-        }
-
-        .error-message {
-            color: var(--error-red);
-            font-size: 14px;
-            margin-bottom: 12px;
-            font-weight: 500;
-            min-height: 20px;
-        }
-
-        /* Countdown State */
-        body.crushed {
-            animation: pulseRed 2s infinite ease-in-out;
-            color: #ffffff !important;
-        }
-        body.crushed p, body.crushed h1, body.crushed h2 {
-            color: #ffffff !important;
-        }
-
-        /* Confidential Theme overrides */
-        body.dark-mode {
-            background-color: #12100E;
-            color: #E6DCD2;
-        }
-        body.dark-mode .btn {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.15);
-            color: #E6DCD2;
-        }
-        body.dark-mode .btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        body.dark-mode p {
-            color: #BCAAA4;
-        }
-
-        /* Typewriter text cursor container */
-        .typewriter-text {
-            font-weight: 700;
-            border-right: 2px solid var(--accent-brown);
-            white-space: pre-wrap;
-            display: inline-block;
-        }
-
-        /* Unselectable/Dodging Button container */
-        #evading-btn-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        /* Continuous Investigation UI Component */
-        .time-box {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            opacity: 0.8;
-            font-weight: 600;
-        }
-
-        body.dark-mode .time-box {
-            color: #BCAAA4;
-        }
-
-        /* Long Form Letter Design */
-        .letter-content {
-            text-align: left;
-            max-height: 60vh;
-            overflow-y: auto;
-            padding: 10px 12px 30px 4px;
-            margin-bottom: 24px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent-brown) transparent;
-        }
-
-        .letter-content::-webkit-scrollbar {
-            width: 4px;
-        }
-        .letter-content::-webkit-scrollbar-thumb {
-            background-color: var(--accent-brown);
-            border-radius: 4px;
-        }
-
-        .letter-content p {
-            font-size: 15.5px;
-            line-height: 1.8;
-            margin-bottom: 20px;
-            color: var(--text-dark);
-        }
-        body.dark-mode .letter-content p {
-            color: #E6DCD2;
-        }
-
-        .center-text {
-            text-align: center !important;
-            font-style: italic;
-        }
-
-        .skip-btn {
-            opacity: 0.3;
-            font-size: 11px;
-            margin-top: 40px;
+        /* Touch-Friendly Collectible Beans */
+        .coffee-bean-collectible {
+            font-size: 24px;
             cursor: pointer;
-            text-decoration: underline;
+            position: absolute;
+            z-index: 9999;
+            padding: 12px; /* Bigger touch target */
+            transition: transform 0.2s;
         }
+        .coffee-bean-collectible:active {
+            transform: scale(1.3);
+        }
+
+        /* Page 0 Password Interface */
+        .restricted-title {
+            color: var(--accent);
+            font-size: 22px;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 12px var(--accent-glow);
+        }
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-size: 11px;
+        }
+        .pass-input {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--text-muted);
+            color: #fff;
+            padding: 14px;
+            width: 100%;
+            text-align: center;
+            font-family: var(--font);
+            font-size: 15px;
+            letter-spacing: 2px;
+            outline: none;
+            border-radius: 6px;
+            -webkit-appearance: none;
+        }
+        .pass-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+        .error-msg {
+            color: var(--accent);
+            margin-top: 12px;
+            font-size: 12px;
+            min-height: 36px;
+            line-height: 1.4;
+        }
+        .shake { animation: shake 0.4s ease-in-out; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .lock-screen {
+            background: #3a000a !important;
+            border-color: #ff0033 !important;
+        }
+
+        /* Terminal System Logging */
+        .terminal-box {
+            text-align: left;
+            font-size: 13px;
+            line-height: 1.6;
+            min-height: 180px;
+        }
+        .terminal-box p { opacity: 0; margin-bottom: 10px; }
+        .terminal-box p.visible { opacity: 1; }
+
+        /* Mobile App Grid Environment */
+        .desktop-env {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            display: grid;
+            grid-template-columns: repeat(3, 110px);
+            grid-auto-rows: 100px;
+            gap: 12px;
+            padding: 60px 10px 20px 10px;
+            justify-content: center;
+            align-content: flex-start;
+            overflow-y: auto;
+        }
+        .os-app-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 10px;
+            text-align: center;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .os-app-icon:active {
+            background: rgba(0, 255, 204, 0.1);
+            border-color: var(--primary);
+        }
+        .os-app-icon span:first-child { font-size: 28px; margin-bottom: 6px; }
+        .os-app-icon span:last-child { font-size: 10px; color: var(--text-main); font-weight: bold;}
+
+        /* Mobile Adaptive Modals */
+        .os-window {
+            position: fixed;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 92vw;
+            max-width: 350px;
+            background: rgba(7, 11, 19, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            border-radius: 12px;
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+        }
+        .window-header {
+            background: rgba(0, 255, 204, 0.08);
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.15);
+        }
+        .window-title { font-size: 11px; font-weight: bold; color: var(--primary); letter-spacing: 1px; }
+        .window-close { color: var(--accent); font-weight: bold; font-size: 16px; padding: 4px 10px; }
+        .window-body { padding: 16px; font-size: 12px; max-height: 60vh; overflow-y: auto; line-height: 1.6; }
+
+        .app-accent-text { color: var(--primary); font-weight: bold; }
+        .app-q-block { margin-bottom: 14px; border-left: 2px solid var(--primary); padding-left: 8px; }
+        .app-ans { color: #a7f3d0; margin-top: 2px;}
+        .app-conf { color: var(--text-muted); font-size: 10px; text-transform: uppercase;}
+        
+        /* Mobile Coffee drip animation styling */
+        .coffee-drip-animation {
+            width: 36px; height: 50px;
+            border: 2px solid var(--text-muted); border-top: none;
+            margin: 12px auto; position: relative; border-radius: 0 0 8px 8px;
+        }
+        .coffee-liquid { width: 100%; background: #6f4e37; position: absolute; bottom: 0; left: 0; height: 0%; transition: height 2s linear; }
+        .drip { width: 4px; height: 6px; background: #6f4e37; position: absolute; top: 0; left: 50%; transform: translateX(-50%); border-radius: 50%; animation: drop 0.6s infinite linear; display: none; }
+        @keyframes drop { 0% { top: 0; opacity: 1; } 100% { top: 35px; opacity: 0; } }
+
+        /* Simulation Progress Meter */
+        .sim-meter-container { background: rgba(0,0,0,0.5); border: 1px solid var(--text-muted); height: 16px; width: 100%; margin: 12px 0; border-radius: 4px; overflow: hidden; }
+        .sim-meter-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #00bbff, var(--primary)); transition: width 0.5s ease; }
+        .sim-status-txt { font-size: 11px; min-height: 16px; color: var(--primary);}
+
+        /* Command Line Input Wrapper */
+        .terminal-output-log { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); height: 140px; overflow-y: auto; padding: 8px; text-align: left; margin-bottom: 10px; font-size: 11px; }
+        .terminal-input-row { display: flex; align-items: center; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px; }
+        .terminal-prompt { color: var(--primary); margin-right: 6px; font-size: 11px; }
+        .terminal-cmd-input { background: transparent; border: none; outline: none; color: #fff; font-family: var(--font); font-size: 12px; flex-grow: 1; -webkit-appearance: none; }
+
+        /* Mobile Emotional Scrollable Containers */
+        .narrative-container {
+            width: 100%;
+            text-align: left;
+            line-height: 1.7;
+            font-size: 13px;
+            white-space: pre-line;
+            max-height: 62vh;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .narrative-container p { margin-bottom: 16px; }
+        .center-msg { text-align: center; font-size: 16px; line-height: 1.8; padding: 10px 0; }
+        .heart-icon { color: var(--accent); font-size: 26px; text-align: center; margin: 16px 0; animation: pulse 1.5s infinite alternate; }
+        @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.2); } }
+
+        /* Final Display Engine View */
+        .final-terminal { text-align: left; font-size: 13px; line-height: 1.8; width: 100%; max-width: 290px; }
+        .coffee-cup-anim { font-size: 40px; margin-bottom: 20px; text-align: center; animation: float 2s infinite ease-in-out; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .cursor-blink { display: inline-block; width: 10px; height: 14px; background: var(--primary); animation: cursorBlink 0.8s infinite; vertical-align: middle; margin-left: 4px; }
+        @keyframes cursorBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
+    <!-- Bean Counter Display Header -->
+    <div id="bean-counter-global">☕ Beans: <span id="bean-count-val">0</span>/10</div>
 
-        <div id="page1" class="screen active">
-            <div id="investigation-time-badge" class="time-box">Estimated Investigation Time: 2 Minutes</div>
-            <h1>Enter Security Key</h1>
-            <p>Please log in to continue.</p>
-            <input type="text" id="password-input" class="input-field" placeholder="••••••••" autocomplete="off">
-            <div id="error-display" class="error-message"></div>
-            <button class="btn" onclick="playClickSound(); checkPassword()">Submit</button>
+    <!-- PAGE 0: PASSWORD SECURITY GATE -->
+    <section id="page-0" class="screen active">
+        <div class="glass-panel" id="auth-panel">
+            <!-- Hidden Coffee Bean 1 -->
+            <div class="coffee-bean-collectible" style="top:2px; left:2px;" onclick="collectBean(this)">☕</div>
+            <h1 class="restricted-title">ACCESS RESTRICTED</h1>
+            <p class="subtitle">Only authorized users may proceed.</p>
+            <div style="margin: 16px 0;">
+                <input type="text" id="password-field" class="pass-input" placeholder="ENTER ACCESS KEY" autocomplete="off" stroke="none" autofocus>
+            </div>
+            <div class="error-msg" id="error-box"></div>
+            <button class="btn" onclick="checkPassword()">[ Authenticate ]</button>
+        </div>
+    </section>
+
+    <!-- PAGE 1: TERMINAL BOOT SEQUENCE -->
+    <section id="page-1" class="screen">
+        <div class="glass-panel">
+            <div class="terminal-box" id="boot-log">
+                <p data-delay="300">Booting Developer Environment...</p>
+                <p data-delay="800">Loading Memories...</p>
+                <p data-delay="1300">Loading Coffee Module...</p>
+                <p data-delay="1800">Loading Friendship Database...</p>
+                <p data-delay="2300">Initializing Asad...</p>
+                <p data-delay="2900" class="app-accent-text">Developer Activated Successfully ☕</p>
+            </div>
+            <button class="btn" id="boot-btn" style="display:none;" onclick="navigatePage(2)">[ Continue ]</button>
+        </div>
+    </section>
+
+    <!-- PAGE 2: ASAD.OS MOBILE DASHBOARD workspace -->
+    <section id="page-2" class="screen" style="padding:0;">
+        <div class="desktop-env" id="desktop">
             
-            <div id="hint-section" style="display: none; margin-top: 20px; width:100%;">
-                <p style="font-size: 14px; margin-bottom:10px;">Need a hint??</p>
-                <button class="btn" onclick="playClickSound(); showHintContent()">Yes</button>
+            <!-- Hidden Beans scattered across grid system targets safely -->
+            <div class="coffee-bean-collectible" style="bottom:120px; right:40px;" onclick="collectBean(this)">☕</div>
+            <div class="coffee-bean-collectible" style="top:42%; left:20%;" onclick="collectBean(this)">☕</div>
+
+            <!-- Launcher Apps Core Icons -->
+            <div class="os-app-icon" onclick="openWindow('win-coffee')">
+                <span>☕</span>
+                <span>Coffee.exe</span>
             </div>
-        </div>
-
-        <div id="page1-hint" class="screen">
-            <h1>The Hint</h1>
-            <p>THE PASSWORD IS WHAT YOU ALWAYS ASK FOR BUT NOT FROM THE BOTTLE😈</p>
-            <button class="btn" onclick="playClickSound(); goBackToPassword()">Continue</button>
-        </div>
-
-        <div id="lockout-screen" class="screen">
-            <h1 style="font-size: 4rem; margin-bottom: 10px;">⚠️</h1>
-            <h2>SYSTEM CRASHED</h2>
-            <p>Too many incorrect login attempts. System locked down for protection.</p>
-            <h1 id="countdown-timer" style="font-size: 3rem; font-weight:700;">30</h1>
-        </div>
-
-        <div id="page2" class="screen">
-            <h2 style="color: #2E7D32; font-weight: 700; letter-spacing: 1px; margin-bottom: 20px;">Access Granted</h2>
-            <h1><span id="typewriter" class="typewriter-text"></span></h1>
-            <div id="welcome-btn-container" style="display:none; margin-top: 20px;">
-                <button class="btn" onclick="playClickSound(); goToPage(3)">Continue</button>
+            <div class="os-app-icon" onclick="openWindow('win-developer')">
+                <span>💻</span>
+                <span>Developer.exe</span>
             </div>
-        </div>
-
-        <div id="page3" class="screen">
-            <h1>BEFORE WE START I NEED YOU TO ANSWER ONE QUESTION</h1>
-            <button class="btn" onclick="playClickSound(); goToPage(4)">okay !!</button>
-        </div>
-
-        <div id="page4" class="screen">
-            <p style="font-size: 17px; text-align: left; font-weight: 500;">If someone had told you on 9 December that one simple conversation would turn into a thousand memories, countless smiles, and a stranger who would slowly become your comfort, your habit, your favorite notification, and a piece of your heart... a person who would make distance hurt, waiting worth it, and love feel effortless...
-
-Would you have believed them? ❤️</p>
-            <div class="btn-group">
-                <button class="btn" onclick="playClickSound(); handlePage4Response('YES')">YESS</button>
-                <button class="btn" onclick="playClickSound(); handlePage4Response('NO')">NO</button>
+            <div class="os-app-icon" onclick="openWindow('win-archive')">
+                <span>📂</span>
+                <span>Archive.exe</span>
             </div>
-        </div>
-
-        <div id="page5-yes" class="screen">
-            <p style="font-size: 17px;">Liar. 😏
-There's no way you looked at me and thought, 'Yep, this girl is about to change my entire life.'
-
-But I'm glad you stayed long enough to let me try. ❤️</p>
-            <button class="btn" onclick="playClickSound(); goToPage(6)">Continue</button>
-        </div>
-
-        <div id="page5-no" class="screen">
-            <p style="font-size: 17px;">That's what I thought. 🥺❤️
-Because neither did I.
-
-Yet here we are...
-6 months later, still choosing each other, one call, one message, and one day at a time.</p>
-            <button class="btn" onclick="playClickSound(); goToPage(6)">Continue</button>
-        </div>
-
-        <div id="page6" class="screen">
-            <h2 style="color: var(--error-red);">⚠️ Important Notice</h2>
-            <p style="text-align: left; max-width: 320px; margin: 0 auto 24px auto;">Before proceeding, please note that this website contains:
-
-Excessive cheesiness 🧀
-Unnecessary emotional damage 🥲
-Evidence that I am obsessed with you 🤏
-And absolutely no refunds ❤️</p>
-            <div class="btn-group" style="position: relative; min-height: 120px;">
-                <button class="btn" onclick="playClickSound(); goToPage(7)">I Accept the Risk</button>
-                <button id="evading-btn" class="btn" style="position: absolute; z-index: 10;" onmouseover="dodgeButton()" onclick="playClickSound(); dodgeButton()">I do not accept</button>
+            <div class="os-app-icon" onclick="openWindow('win-ai')">
+                <span>🤖</span>
+                <span>Asad AI.exe</span>
             </div>
-        </div>
-
-        <div id="page7" class="screen">
-            <div class="time-box">Updated Investigation Time: Longer than expected... Kind of like us. ❤️</div>
-            <h2>Relationship Eligibility Test</h2>
-            <p>To continue, please answer the following question:</p>
-            <h3 style="margin-bottom: 24px;">Who is the cutest person in this relationship?</h3>
-            <div style="display: flex; flex-direction: column; width: 100%; gap: 4px;">
-                <button class="btn" onclick="playClickSound(); handleEligibility('AASTHA')">AASTHA😌</button>
-                <button class="btn" onclick="playClickSound(); handleEligibility('SAMARTH')">SAMARTH 😌</button>
-                <button class="btn" onclick="playClickSound(); handleEligibility('BOTH')">BOTH😌</button>
+            <div class="os-app-icon" onclick="openWindow('win-source')">
+                <span>🧬</span>
+                <span>Source Code.exe</span>
             </div>
-        </div>
-
-        <div id="page7-prank" class="screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #D32F2F; color: #fff; z-index: 9999; display: none; justify-content: center; align-items: center; flex-direction: column; padding: 24px;">
-            <h1 style="font-size: 3rem; color: #fff;">SYSTEM FAILURE</h1>
-            <p style="color: #fff; font-size: 18px; margin-top: 10px;">Incorrect choice detected. Deleting systemic components...</p>
-            <h2 id="prank-text" style="color: #fff; margin-top: 30px; display: none; font-weight: 700;">You got pranked 😂<br><br><span style="font-size:16px; font-weight:400; opacity:0.9;">Now you may continue</span></h2>
-            <button id="prank-continue-btn" class="btn" style="display: none; background: #fff; color: #D32F2F; margin-top: 20px;" onclick="playClickSound(); exitPrank()">Continue</button>
-        </div>
-
-        <div id="page7-correct" class="screen">
-            <h1>Correct Answer.</h1>
-            <p>You may proceed.</p>
-            <button class="btn" onclick="playClickSound(); switchToDarkModeAndProceed()">Next Screen</button>
-        </div>
-
-        <div id="page8" class="screen">
-            <h2 style="letter-spacing: 2px; color: #D32F2F; font-weight: 700;">CONFIDENTIAL FILE</h2>
-            <p style="font-family: monospace; font-size: 14px; opacity: 0.8; margin-bottom: 30px;">
-                Access Level: Restricted<br>
-                Subject: Unknown<br>
-                Status: Under Investigation
-            </p>
-            <button class="btn" onclick="playClickSound(); goToPage(9)">Open File</button>
-        </div>
-
-        <div id="page9" class="screen">
-            <h2>Case Summary</h2>
-            <p>Approximately 182 days ago, two strangers started talking.
-
-At the time, neither suspect knew the consequences.</p>
-            <button class="btn" onclick="playClickSound(); goToPage(10)">Next Clue</button>
-        </div>
-
-        <div id="page10" class="screen">
-            <h2>Clue #1</h2>
-            <p style="text-align: left;">The suspect began occupying an unusual amount of mental space.
-
-Symptoms included:
-• Smiling at notifications
-• Missing someone unnecessarily
-• Staring at the screen waiting for messages
-• Acting stupidly happy for no apparent reason
-😂❤️</p>
-            <button class="btn" onclick="playClickSound(); goToPage(11)">Continue Investigation</button>
-        </div>
-
-        <div id="page11" class="screen">
-            <h2>Clue #2</h2>
-            <p>The victim initially believed this was temporary.
-
-Further investigation revealed...
-The situation was getting worse.</p>
-            <button class="btn" onclick="playClickSound(); goToPage(12)">How bad?</button>
-        </div>
-
-        <div id="page12" class="screen">
-            <h2>Evidence Found</h2>
-            <p>6 months together
-Thousands of messages
-Countless memories
-One website created specifically for the suspect
-
-Investigators are now concerned.
-😭😂</p>
-            <button class="btn" onclick="playClickSound(); goToPage(13)">Continue</button>
-        </div>
-
-        <div id="page13" class="screen">
-            <h2>Wait.</h2>
-            <p>Something doesn't add up.
-There are two possibilities.
-
-Either...
-The suspect is responsible.
-Or...
-The victim is hiding something.</p>
-            <div class="btn-group">
-                <button class="btn" onclick="playClickSound(); handleInvestigationBranch('SUSPECT')">Investigate Suspect</button>
-                <button class="btn" onclick="playClickSound(); handleInvestigationBranch('VICTIM')">Investigate Victim</button>
+            <div class="os-app-icon" onclick="openWindow('win-stack')">
+                <span>💬</span>
+                <span>Stack Overflow.exe</span>
             </div>
-        </div>
-
-        <div id="page13-suspect" class="screen">
-            <p>Subject appears charming.
-Subject appears innocent.
-Subject is definitely not innocent.
-😂❤️</p>
-            <button class="btn" onclick="playClickSound(); showFinalReveal()">Continue</button>
-        </div>
-
-        <div id="page13-victim" class="screen">
-            <p>Victim claims to be normal.
-Evidence strongly disagrees.
-😂</p>
-            <button class="btn" onclick="playClickSound(); showFinalReveal()">Continue</button>
-        </div>
-
-        <div id="page13-reveal" class="screen">
-            <h2>Final Reveal</h2>
-            <h1>Case Closed</h1>
-            <p id="reveal-text-block" style="font-weight: 500; min-height: 150px;"></p>
-            <button id="reveal-continue-btn" class="btn" style="display:none;" onclick="playClickSound(); goToPage(14)">Continue</button>
-        </div>
-
-        <div id="page14" class="screen">
-            <p style="font-style: italic; font-size: 14px; opacity: 0.7;">The best mystery stories have a fake ending.</p>
-            <h2 style="margin-top: 10px;">CASE CLOSED ✅</h2>
-            <p>After reviewing all available evidence, investigators concluded that everything started with a conversation on 9 December.
-
-The file has been officially closed.
-Thank you for your cooperation.</p>
-            <button class="btn" onclick="playClickSound(); triggerBoomPlotTwist()">Exit</button>
-        </div>
-
-        <div id="page14-boom" class="screen">
-            <h1 style="font-size: 3.5rem; margin-bottom: 20px;">BOOM 💥</h1>
-            <h2 style="color: var(--error-red); letter-spacing: 1px;">⚠️ NEW EVIDENCE DISCOVERED ⚠️</h2>
-            <p>The investigation has been reopened.
-A crucial detail was overlooked.</p>
-            <button class="btn" onclick="playClickSound(); showTrueEvidence()">View Evidence</button>
-        </div>
-
-        <div id="page14-final" class="screen">
-            <h2>Evidence #7</h2>
-            <p style="text-align: left; font-size: 16px;">The suspect was never the problem.
-The conversation was never the problem.
-
-The real mystery is this:
-Out of billions of people...
-Different cities. Different routines. Different lives.
-
-How did we end up finding each other?
-
-"I still don't know the answer."
-
-"But I think it's my favorite mystery.
-❤️"</p>
-            <button class="btn" onclick="playClickSound(); goToPage(15)">Continue</button>
-        </div>
-
-        <div id="page15" class="screen">
-            <h2>One final question.</h2>
-            <p>What do you think this website is about?</p>
-            <div style="display: flex; flex-direction: column; width: 100%; gap: 4px;">
-                <button class="btn" onclick="playClickSound(); handleFinalQuestionAnswers()">❤️ Love</button>
-                <button class="btn" onclick="playClickSound(); handleFinalQuestionAnswers()">🕵️ A Mystery</button>
-                <button class="btn" onclick="playClickSound(); handleFinalQuestionAnswers()">💧 Paani Chahiye</button>
+            <div class="os-app-icon" onclick="openWindow('win-secret')">
+                <span>🔐</span>
+                <span>Secret.exe</span>
             </div>
-        </div>
 
-        <div id="page15-eval" class="screen">
-            <p id="eval-text-lines" style="font-size:17px; font-weight:500; min-height: 200px;"></p>
-            <button id="eval-continue-btn" class="btn" style="display:none;" onclick="playClickSound(); goToPage(16)">Continue</button>
-        </div>
-
-        <div id="page16" class="screen">
-            <h2>Investigation Complete.</h2>
-            <p>1 Unopened File Remaining.</p>
-            <button class="btn" onclick="playClickSound(); revealFileNameScreen()">Open File</button>
-        </div>
-
-        <div id="page16-sub" class="screen">
-            <p style="font-family: monospace; font-size: 13px; opacity: 0.6; margin-bottom: 8px;">FILE NAME:</p>
-            <h2 style="font-style: italic; margin-bottom: 30px;">Things I Never Say Properly</h2>
-            <button class="btn" onclick="playClickSound(); goToPage(17)">Open</button>
-        </div>
-
-        <div id="page17" class="screen" style="max-width: 100%;">
-            <h1 style="align-self: flex-start; margin-left: 4px; font-size: 28px;">Samarth,</h1>
-            
-            <div class="letter-content">
-                <p>If you've made it this far, then I guess the investigation is finally over. No more clues, no more suspects, no more plot twists. Just me. And the truth.</p>
-                <p>The truth is that before you, I never really understood how one person could become such an important part of someone else's life. I used to think that kind of love only existed in stories, the kind where someone becomes your comfort, your safe place, your favorite part of every day. But then you happened, and somehow what felt impossible became my reality.</p>
-                <p>You know what my favorite thing about you is? It isn't how smart you are, although you are ridiculously smart. It isn't how strong you are, although I admire that strength more than you'll ever know. It isn't even the way you make me laugh or how you somehow manage to make every day better just by being a part of it.</p>
-                <p>It's your heart.</p>
-                <p>You are genuinely the most beautiful soul I have ever met.</p>
-                <p>The way you care. The way you love. The way you always try to make me feel okay, even when life isn't being kind to you. There have been so many moments when I was upset, stressed, overthinking, or simply not feeling like myself, and somehow you always knew how to make things feel lighter. Somehow you always knew what to say. And honestly, I don't think anyone has ever made me feel as safe, understood, and comforted as you do.</p>
-                <p>You have this habit of carrying your battles quietly. You try so hard to be strong. You try so hard to handle everything on your own. Most of the time you hide your pain behind that strong version of yourself that everyone sees. But every once in a while, when you let your guard down and allow yourself to be vulnerable, I swear my heart melts a little.</p>
-                <p>Because even in those moments, when you're emotional, when you're tired, when things become too much, you are still the most precious person I've ever known. And every single time I see that side of you, all I want to do is hold you close, make the world quiet for a while, and remind you that you don't have to carry everything alone anymore.</p>
-                <p>You don't always have to be the strong one.</p>
-                <p>You don't always have to fight every battle by yourself.</p>
-                <p>Because now you have me.</p>
-                <p>And maybe I won't always have the perfect words. Maybe I won't always know exactly how to fix everything. But I promise that I'll never stop trying. I promise that no matter how difficult life gets, no matter how messy things become, no matter how impossible a situation looks, I will be standing beside you.</p>
-                <p class="center-text">Not in front of you.<br>Not behind you.</p>
-                <p class="center-text" style="font-weight: 600;">Beside you.</p>
-                <p class="center-text">Always.</p>
-                <p>I know there are things you've been carrying for years. Things that have shaped you, hurt you, challenged you, and made you stronger than most people will ever understand. I can't erase those things. I can't change the past. But what I can do is be here for every chapter that comes next.</p>
-                <p>And maybe we won't fix everything overnight.</p>
-                <p>Maybe healing doesn't work like that.</p>
-                <p>But we can try.</p>
-                <p class="center-text">Together.</p>
-                <p class="center-text">One day at a time.</p>
-                <p class="center-text">One conversation at a time.</p>
-                <p class="center-text">One hug at a time.</p>
-                <p class="center-text">One "we'll figure it out" at a time.</p>
-                <p>Because that's what I want our future to be. Not perfection. Not a life without problems. Just a life where neither of us has to face those problems alone.</p>
-                <p>Sometimes I catch myself imagining the future and it makes me smile like an idiot.</p>
-                <p>I imagine the day we finally close the distance between us.</p>
-                <p>And maybe my favorite image of all is seeing you surrounded by love, peace, happiness, and the family we build together someday.</p>
-                <p>Because if there is one thing I want more than anything else in this world, it is this:</p>
-                <p>I want you to be happy.</p>
-                <p class="center-text" style="font-weight: 600;">Truly happy.</p>
-                <p>The kind of happy that reaches your eyes.</p>
-                <p>The kind of happy that makes your smile impossible to hide.</p>
-                <p>The kind of happy that makes all the difficult days worth surviving.</p>
-                <p>Because if there is anyone who deserves that happiness, it's you.</p>
-                <p>And if it takes my entire lifetime to help create that happiness, then I will spend my entire lifetime doing exactly that.</p>
-                <p>And honestly, I don't have all the answers.</p>
-                <p>I don't know where life will take us. I don't know how many difficult days we'll have to get through before we finally get everything we've dreamed about. I don't know how long it'll take before the distance disappears and I can stop missing you through a screen.</p>
-                <p>But for some reason, none of that scares me when I think about you.</p>
-                <p>Because whenever I imagine my future, you're already there.</p>
-                <p>You're there in the small moments I don't even talk about.</p>
-                <p>You're there when I imagine coming home after a long day and telling someone about the most random thing that happened.</p>
-                <p>You're there when I imagine late-night conversations that don't have to end because one of us needs to sleep.</p>
-                <p>You're there when I imagine getting engaged and trying not to cry while secretly knowing I'll cry anyway.</p>
-                <p>You're there when I imagine our wedding day and how stupidly handsome you're going to look.</p>
-                <p>You're there when I imagine building a life together.</p>
-                <p>And you're there when I imagine the version of you that I want to meet someday.</p>
-                <p>The version of you that is finally at peace.</p>
-                <p>The version of you that isn't carrying the weight of everything alone.</p>
-                <p>The version of you that smiles more often, worries a little less, and finally realizes just how loved he is.</p>
-                <p>Because if there's one thing I want for the rest of my life, it's to see you happy.</p>
-                <p>Not the "I'm okay" happy.</p>
-                <p>Not the "don't worry about me" happy.</p>
-                <p>The real happy.</p>
-                <p>The kind that reaches your eyes.</p>
-                <p>The kind that stays.</p>
-                <p>And maybe that's why I love you the way I do.</p>
-                <p>Because when something good happens, you're the first person I want to tell.</p>
-                <p>When something bad happens, you're the first person I want beside me.</p>
-                <p>And when I think about all the years ahead of me, you're the person I want to experience them with.</p>
-                <p>So if life gets difficult, we'll figure it out.</p>
-                <p>If life gets messy, we'll figure it out.</p>
-                <p>If we get scared, we'll figure it out.</p>
-                <p>Together.</p>
-                <p>Because after everything, that's all I've ever really wanted.</p>
-                <p class="center-text">You.</p>
-                <p class="center-text">Just you. ❤️</p>
-                <p class="center-text" style="font-weight: 700; font-size: 20px; color: var(--accent-brown); margin-top: 30px;">LOVE YOU SO MUCH.</p>
+            <!-- WINDOW 1: COFFEE ENGINE -->
+            <div id="win-coffee" class="os-window">
+                <div class="window-header">
+                    <span class="window-title">The Filter Coffee Protocol</span>
+                    <span class="window-close" onclick="closeWindow('win-coffee')">✕</span>
+                </div>
+                <div class="window-body" style="text-align:center;">
+                    <div id="coffee-status-msg" class="app-accent-text" style="color:var(--accent); font-size:11px;">ERROR:<br>Developer Not Found<br>Caffeine Levels Critical</div>
+                    <div class="coffee-drip-animation">
+                        <div class="drip" id="coffee-drop"></div>
+                        <div class="coffee-liquid" id="coffee-level"></div>
+                    </div>
+                    <!-- Hidden Bean 4 inside app architecture -->
+                    <div class="coffee-bean-collectible" style="bottom:2px; left:2px; display:none;" id="bean-hidden-coffee" onclick="collectBean(this)">☕</div>
+                    <button class="btn" id="coffee-btn-1" onclick="coffeeStep(1)">[ Add Coffee Powder ]</button>
+                    <button class="btn" id="coffee-btn-2" style="display:none;" onclick="coffeeStep(2)">[ Add Hot Water ]</button>
+                    <button class="btn" id="coffee-btn-3" style="display:none;" onclick="coffeeStep(3)">[ Wait For Drip ]</button>
+                    <button class="btn" id="coffee-btn-4" style="display:none;" onclick="coffeeStep(4)">[ Serve Coffee ]</button>
+                </div>
             </div>
-            
-            <button class="btn" onclick="playClickSound(); goToPage(18)">Continue</button>
+
+            <!-- WINDOW 2: DEVELOPER ENGINE SIMULATOR -->
+            <div id="win-developer" class="os-window">
+                <div class="window-header">
+                    <span class="window-title">How Asad Works</span>
+                    <span class="window-close" onclick="closeWindow('win-developer')">✕</span>
+                </div>
+                <div class="window-body" style="text-align:center;">
+                    <p>Filter Coffee → Code → More Coffee → More Code → Sleep? (False)</p>
+                    <div class="sim-meter-container">
+                        <div class="sim-meter-fill" id="sim-progress"></div>
+                    </div>
+                    <div class="sim-status-txt" id="sim-status-log"></div>
+                    <button class="btn" onclick="runSimulation()">[ Run Simulation ]</button>
+                </div>
+            </div>
+
+            <!-- WINDOW 3: ARCHIVE DATABASE -->
+            <div id="win-archive" class="os-window">
+                <div class="window-header">
+                    <span class="window-title">The Asad Archive</span>
+                    <span class="window-close" onclick="closeWindow('win-archive')">✕</span>
+                </div>
+                <div class="window-body">
+                    <h4 class="app-accent-text">[ Personality Analysis ]</h4>
+                    <p>Intelligence: 100<br>Humor: 95<br>Patience: Depends On Coffee<br>Debugging Ability: Infinite</p>
+                    <hr style="border:none; border-top:1px solid rgba(255,255,255,0.1); margin:10px 0;">
+                    <h4 class="app-accent-text">[ Fun Facts ]</h4>
+                    <p>- Runs on Filter Coffee<br>- Can turn ideas into projects<br>- Talks about a dating app more than he builds it <span class="coffee-bean-collectible" style="position:static; padding:2px;" onclick="collectBean(this)">☕</span></p>
+                    <hr style="border:none; border-top:1px solid rgba(255,255,255,0.1); margin:10px 0;">
+                    <h4 class="app-accent-text">[ Secret Messages ]</h4>
+                    <p style="font-style: italic; color: #cbd5e1;">"Some people enter your life unexpectedly and somehow become important."</p>
+                </div>
+            </div>
+
+            <!-- WINDOW 4: ASAD AI RUNTIME -->
+            <div id="win-ai" class="os-window">
+                <div class="window-header">
+                    <span class="window-title">Asad AI.exe</span>
+                    <span class="window-close" onclick="closeWindow('win-ai')">✕</span>
+                </div>
+                <div class="window-body">
+                    <div class="app-q-block">
+                        <div><b>Question:</b> What's Asad's favorite thing?</div>
+                        <div class="app-ans"><span class="app-conf">Confidence: 97%</span><br>Probably coffee, coding, and overthinking startup ideas.</div>
+                    </div>
+                    <div class="app-q-block">
+                        <div><b>Question:</b> Will Asad reply quickly?</div>
+                        <div class="app-ans"><span class="app-conf">Confidence: 84%</span><br>Depends on whether he is coding, sleeping, or pretending not to see the message.</div>
+                    </div>
+                    <div class="app-q-block">
+                        <div><b>Question:</b> How much coffee does Asad need?</div>
+                        <div class="app-ans"><span class="app-conf">Confidence: 99%</span><br>More.</div>
+                    </div>
+                    <div class="app-q-block">
+                        <div><b>Question:</b> Should Asad build the dating app?</div>
+                        <div class="app-ans"><span class="app-conf">Confidence: 100%</span><br>Absolutely.</div>
+                    </div>
+                    <!-- Hidden Bean 6 inside AI module container layout -->
+                    <div class="coffee-bean-collectible" style="bottom:2px; right:10px;" onclick="collectBean(this)">☕</div>
+                </div>
+            </div>
+
+            <!-- WINDOW 5: SOURCE CODE OBJECT -->
+            <div id="win-source" class="os-window">
+                <div class="window-header">
+                    <span class="window-title">Source Code.exe</span>
+                    <span class="window-close" onclick="closeWindow('win-source')">✕</span>
+                </div>
+                <div class="window-body">
+                    <pre style="color: #a7f3d0; font-family:var(--font); font-size:11px;">const Asad = {
+  intelligence: 100,
+  debugging: Infinity,
+  sleep: undefined,
+  coffee: true
+};</pre>
+                    <div id="hidden-layers-box" style="display:none; margin-top:10px; border-top:1px dashed var(--primary); padding-top:10px;">
+                        <pre style="color: #f472b6; font-family:var(--font); font-size:11px;">const HiddenTraits = {
+  caring: true,
+  hardworking: true,
+  stubborn: true,
+  underrated: true
+};</pre>
+                        <!-- Hidden bean 7 inside hidden block context matrix -->
+                        <span class="coffee-bean-collectible" style="position:static; padding:4px;" onclick="collectBean(this)">☕</span>
+                    </div>
+                    <button class="btn" id="layer-btn" onclick="revealLayers()">[ Reveal Hidden Layers ]</button>
+                </div>
+            </div>
+
+            <!-- WINDOW 6: STACK OVERFLOW FORUM -->
+            <div id="win-stack" class="os-window">
+                <div class="window-header">
+                    <span class="window-title">Stack Overflow.exe</span>
+                    <span class="window-close" onclick="closeWindow('win-stack')">✕</span>
+                </div>
+                <div class="window-body">
+                    <div class="app-q-block" style="border-color: #f97316;">
+                        <div class="app-accent-text" style="color:#f97316;">How to wake up Asad?</div>
+                        <p>Step 1: Make coffee.<br>Step 2: Mention a new project idea.</p>
+                    </div>
+                    <div class="app-q-block" style="border-color: #f97316;">
+                        <div class="app-accent-text" style="color:#f97316;">Why is Asad always coding?</div>
+                        <p>Nobody knows. Researchers are still investigating.</p>
+                    </div>
+                    <div class="app-q-block" style="border-color: #f97316;">
+                        <div class="app-accent-text" style="color:#f97316;">Best way to get his attention?</div>
+                        <p>Talk about coffee. Or startups. Preferably both.</p>
+                    </div>
+                    <!-- Hidden bean 8 embedded into stack container -->
+                    <div class="coffee-bean-collectible" style="top:10px; right:40px;" onclick="collectBean(this)">☕</div>
+                </div>
+            </div>
+
+            <!-- WINDOW 7: SECRET CORE INTERFACE COMMAND LOGS -->
+            <div id="win-secret" class="os-window">
+                <div class="window-header">
+                    <span class="window-title">Secret.exe</span>
+                    <span class="window-close" onclick="closeWindow('win-secret')">✕</span>
+                </div>
+                <div class="window-body" style="padding:10px;">
+                    <div class="terminal-output-log" id="term-log">Terminal Interface Active. Type 'help'<br><br></div>
+                    <div class="terminal-input-row">
+                        <span class="terminal-prompt">asad_os~#</span>
+                        <input type="text" id="term-input" class="terminal-cmd-input" autocomplete="off" placeholder="Tap to type...">
+                    </div>
+                    <div style="text-align:center; display:none; margin-top:10px;" id="term-secret-nav">
+                        <button class="btn" onclick="navigatePage(3)">[ Continue ]</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GLOBAL BEAN HUNT UNLOCKED DIALOG -->
+            <div id="win-bean-reward" class="os-window" style="z-index:999999;">
+                <div class="window-header">
+                    <span class="window-title">SYSTEM NOTIFICATION</span>
+                    <span class="window-close" onclick="closeWindow('win-bean-reward')">✕</span>
+                </div>
+                <div class="window-body" style="text-align:center;">
+                    <p class="app-accent-text" style="font-size:15px;">Secret File Unlocked ☕🔓</p>
+                    <p style="margin-top:8px; font-size:11px; color:var(--text-muted);">You tracked down all the hidden coffee beans on mobile screen targets!</p>
+                    <button class="btn" onclick="openSecretAppViaBean()">[ Open Secret File ]</button>
+                </div>
+            </div>
+
+            <!-- Last two wild loose Beans scattered safely on responsive outer limits -->
+            <div class="coffee-bean-collectible" style="bottom:15px; left:10px;" onclick="collectBean(this)">☕</div>
+            <div class="coffee-bean-collectible" style="top:12px; left:12px;" onclick="collectBean(this)">☕</div>
+
         </div>
+    </section>
 
-        <div id="page18" class="screen">
-            <h2 style="letter-spacing: 1px; margin-bottom: 20px;">END OF STATEMENT</h2>
-            <h1 style="font-size: 24px; margin-bottom: 12px; font-weight: 600;">STILL CHOOSING YOU</h1>
-            <h1 style="font-size: 24px; margin-bottom: 12px; font-weight: 600;">STILL LOVING YOU</h1>
-            <h1 style="font-size: 24px; color: var(--accent-brown); font-weight: 700; line-height: 1.4; margin-top: 24px;">AND HAPPY 6TH MONTH ANNIVERSARY MY HANDSOME ❤️🧿</h1>
+    <!-- PAGE 3: MAIN EMBEDDED PERSONAL STORY NARRATION -->
+    <section id="page-3" class="screen">
+        <div class="glass-panel" style="max-width:350px;">
+            <div class="narrative-container">
+                <p>So, we met on LinkedIn. Funny enough, I was actually looking for a VFX artist at the time, but somehow you ended up walking into my life instead. 🙂</p>
+                <p>To be honest, when we first started talking, I remember thinking, “What kind of guy is this?” Then you told me about your idea of building a dating app, and I found it surprisingly interesting. From there, we slowly became close—really close friends.</p>
+                <p>But there was one thing that always confused me. Just when I started considering you one of my closest friends, you'd say something like, “We're not even good friends, we're just friends.” That was manageable. But then one day, you said we were strangers. And honestly? That hurt. A lot.</p>
+                <p>After that, things eventually became normal again. I started talking to you a little less, but somehow our bond only grew stronger. And here's the funny part—you're a developer completely immersed in your coding world, and I'm busy surviving in my finance world. Yet somehow, this coding guy started appearing in my dreams. Not once. Not twice. Three or four times... maybe even more. I honestly lost count.</p>
+                <p>There were days when I'd catch myself thinking about you for hours without even realizing it. I worried about you more than I probably should have. For someone as nonchalant as me—someone who usually doesn't let people affect her that much—that was unusual.</p>
+                <p>Somewhere along the way, your successes started feeling like a small part of my own achievements. And whenever you were stressed, I'd spend half my day wondering what you were doing, whether you were okay, whether things were getting better for you.</p>
+                <p>The truth is, I don't really know what all of this means. Maybe I never will. What I do know is that I genuinely care about you. A lot.</p>
+                <p>And more than anything, I don't want this friendship to end—ever.</p>
+                <p>There's so much more I could say, but I don't think I'll ever be able to fully put these feelings into words or justify them properly. Some things are just felt, not explained.</p>
+            </div>
+            <button class="btn" onclick="navigatePage(4)">[ Continue ]</button>
         </div>
+    </section>
 
-        <div id="sneaky-skip" class="skip-btn" onclick="playClickSound(); triggerSkipPunishment()" style="display:none;">Skip To The Ending</div>
-
-        <div id="skip-punishment-screen" class="screen">
-            <h2>Nice try. 😏</h2>
-            <p>You really thought I'd let you skip 6 months of story?
-
-Go back. 😌</p>
-            <button class="btn" onclick="playClickSound(); returnFromSkipPunishment()">Go Back</button>
+    <!-- PAGE 4 -->
+    <section id="page-4" class="screen">
+        <div class="glass-panel">
+            <div class="narrative-container center-msg">
+                <p>One last thing...</p>
+            </div>
+            <button class="btn" onclick="navigatePage(5)">[ Continue ]</button>
         </div>
+    </section>
 
-    </div>
+    <!-- PAGE 5 -->
+    <section id="page-5" class="screen">
+        <div class="glass-panel">
+            <div class="narrative-container center-msg" style="font-size:14px;">
+                <p>Let's acknowledge that we have feelings for each other.</p>
+                <p>But let's not rush into defining anything.</p>
+                <p>Let's continue being us, and see where this naturally goes.</p>
+            </div>
+            <button class="btn" onclick="navigatePage(6)">[ Continue ]</button>
+        </div>
+    </section>
+
+    <!-- PAGE 6 -->
+    <section id="page-6" class="screen">
+        <div class="glass-panel">
+            <div class="narrative-container center-msg" style="font-size:13px;">
+                <p>I don't know what the future holds for us.</p>
+                <p>I don't know what we'll become, or what name we'll eventually give to this.</p>
+                <p>But what I do know is that meeting you was one of the most unexpected and beautiful things that happened to me.</p>
+                <p>And no matter where life takes us from here...</p>
+                <p>I'm really, really grateful to have you.</p>
+                <div class="heart-icon">❤️</div>
+            </div>
+            <button class="btn" onclick="navigatePage(7)">[ Continue ]</button>
+        </div>
+    </section>
+
+    <!-- PAGE 7 -->
+    <section id="page-7" class="screen">
+        <div class="glass-panel">
+            <div class="narrative-container" style="font-size: 13px;">
+                <p><b>P.S.</b></p>
+                <p>And for the love of God...</p>
+                <p style="color:var(--primary); font-size:16px; font-weight:bold; letter-spacing:1px; text-align:center; margin: 10px 0;">PLEASE START BUILDING THAT DATING APP.</p>
+                <p>You've been talking about it for so long that at this point I'm not sure whether it's a startup idea or a myth.</p>
+                <p>I met you because of that idea.</p>
+                <p>The least we can do now is build it. 🙂</p>
+                <p style="text-align:right; color:var(--text-muted); margin-top:14px; font-size:11px;">— Your unofficial product manager</p>
+            </div>
+            <button class="btn" onclick="navigatePage(8)">[ Continue ]</button>
+        </div>
+    </section>
+
+    <!-- PAGE 8: SYSTEM SHUTDOWN DISPLAYS -->
+    <section id="page-8" class="screen" style="background:#000000;">
+        <div class="coffee-cup-anim">☕</div>
+        <div class="final-terminal" id="final-log"></div>
+    </section>
 
     <script>
-        // State variables
-        let wrongAttempts = 0;
-        let activeScreenId = 'page1';
-        let previousScreenId = 'page1';
-        
-        const wrongTexts = [
-            "Come on it's a easy one🫠",
-            "Tum Samarth hi ho na🤨",
-            "Chhiii yrrr baby😭",
-            "Ab bhi galat🙂",
-            "Huhhh🙄"
+        /************************************************************************
+         * MOBILE TAP & CINEMATIC AUDIO AUDIO LOGICS (WEB AUDIO API)
+         ************************************************************************/
+        const AudioEngine = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playClick() {
+                this.init();
+                let osc = this.ctx.createOscillator();
+                let gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(550, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(110, this.ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.12);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.13);
+            },
+            playError() {
+                this.init();
+                let osc = this.ctx.createOscillator();
+                let gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(100, this.ctx.currentTime);
+                osc.frequency.linearRampToValueAtTime(30, this.ctx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.22);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.25);
+            },
+            playUnlock() {
+                this.init();
+                let now = this.ctx.currentTime;
+                [440, 554, 659, 880].forEach((f, idx) => {
+                    let osc = this.ctx.createOscillator();
+                    let gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(f, now + idx * 0.04);
+                    gain.gain.setValueAtTime(0.06, now + idx * 0.04);
+                    gain.gain.linearRampToValueAtTime(0.001, now + idx * 0.04 + 0.15);
+                    osc.connect(gain); gain.connect(this.ctx.destination);
+                    osc.start(now + idx * 0.04); osc.stop(now + idx * 0.04 + 0.16);
+                });
+            },
+            playTick() {
+                this.init();
+                let osc = this.ctx.createOscillator();
+                let gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1100, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.02);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.03);
+            },
+            playTransition() {
+                this.init();
+                let osc = this.ctx.createOscillator();
+                let gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(400, this.ctx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.001, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.12, this.ctx.currentTime + 0.12);
+                gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.4);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.42);
+            }
+        };
+
+        /************************************************************************
+         * DEVICE STATE ARCHITECTURE
+         ************************************************************************/
+        let currentWrongAttempts = 0;
+        let beansCollected = 0;
+        const totalBeans = 10;
+
+        // Unified click capture for processing audio on mobile touch triggers
+        document.addEventListener('click', (e) => {
+            if(e.target.classList.contains('btn') || e.target.classList.contains('os-app-icon') || e.target.closest('.os-app-icon')) {
+                AudioEngine.playClick();
+            }
+        });
+
+        function navigatePage(pageNum) {
+            AudioEngine.playTransition();
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const targetPage = document.getElementById(`page-${pageNum}`);
+            targetPage.classList.add('active');
+
+            if (pageNum === 1) {
+                runBootSequence();
+            } else if (pageNum === 2) {
+                document.getElementById('bean-counter-global').style.display = 'block';
+                setTimeout(() => setupTerminalInput(), 300);
+            } else if (pageNum === 8) {
+                document.getElementById('bean-counter-global').style.display = 'none';
+                runFinalScreenSequence();
+            }
+        }
+
+        /************************************************************************
+         * PAGE 0: TOUCH PASSWORD RUNTIME
+         ************************************************************************/
+        const wrongMessages = [
+            "Nice try, detective.",
+            "That's not it.",
+            "Access denied. Developer disappointed.",
+            "Wrong password. Please consult the coffee department.",
+            "404: Correct password not found."
         ];
 
-        // Web Audio API Sound Generator for Game/Digital UI Click
-        let audioCtx = null;
-        function playClickSound() {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                
-                // Create audio nodes
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                
-                osc.type = 'sine'; // Soft digital sound
-                // Quick pitch slide from 600Hz down to 150Hz for a crisp click
-                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.08);
-                
-                // Ultra quick volume decay so it sounds like a snappy tap
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.08);
-            } catch (e) {
-                console.log("Audio play blocked or not supported yet.");
-            }
-        }
-
-        // Global screen transition system
-        function goToPage(pageNum) {
-            // Hide current open screen
-            document.getElementById(activeScreenId).classList.remove('active');
-            
-            // Set tracking IDs
-            previousScreenId = activeScreenId;
-            activeScreenId = 'page' + pageNum;
-            
-            // Specific overrides for sub-screens layout flow
-            if(pageNum === '1-hint') activeScreenId = 'page1-hint';
-            
-            // Render target screen active
-            document.getElementById(activeScreenId).classList.add('active');
-            window.scrollTo(0, 0);
-            
-            // Control display framework for the sneaky skip button
-            const skip = document.getElementById('sneaky-skip');
-            if (typeof pageNum === 'number' && pageNum >= 4 && pageNum <= 12) {
-                skip.style.display = 'block';
-            } else {
-                skip.style.display = 'none';
-            }
-        }
-
-        // PAGE 1 LOGIC: Password Processing and System Locks
         function checkPassword() {
-            const input = document.getElementById('password-input');
-            const errorDisplay = document.getElementById('error-display');
-            const pageContainer = document.getElementById('page1');
-            
-            if (input.value.trim() === 'PAANI CHAHIYE') {
-                errorDisplay.innerText = "";
-                goToPage(2);
-                startTypewriter();
+            const input = document.getElementById('password-field');
+            const errorBox = document.getElementById('error-box');
+            const authPanel = document.getElementById('auth-panel');
+
+            if (input.value.trim().toUpperCase() === "WE WERE STRANGERS") {
+                errorBox.innerText = "";
+                navigatePage(1);
             } else {
-                wrongAttempts++;
-                input.value = "";
-                
-                // Shake execution
-                pageContainer.classList.add('shake-active');
-                setTimeout(() => {
-                    pageContainer.classList.remove('shake-active');
-                }, 400);
+                currentWrongAttempts++;
+                AudioEngine.playError();
+                authPanel.classList.add('shake');
+                setTimeout(() => authPanel.classList.remove('shake'), 400);
 
-                // Error text routing loop management
-                let textIndex = (wrongAttempts - 1) % 5;
-                errorDisplay.innerText = wrongTexts[textIndex];
-
-                // Trigger System Crash at 5 unique sequence points
-                if (wrongAttempts >= 5) {
-                    triggerWebsiteCrash();
+                if (currentWrongAttempts >= 5) {
+                    triggerSecurityLockdown();
+                } else {
+                    errorBox.innerText = wrongMessages[Math.floor(Math.random() * wrongMessages.length)];
                 }
             }
         }
 
-        function triggerWebsiteCrash() {
-            document.getElementById('page1').classList.remove('active');
-            document.getElementById('lockout-screen').classList.add('active');
-            document.body.classList.add('crushed');
+        function triggerSecurityLockdown() {
+            const input = document.getElementById('password-field');
+            const errorBox = document.getElementById('error-box');
+            const authPanel = document.getElementById('auth-panel');
             
-            let timeLeft = 30;
-            const timerDisplay = document.getElementById('countdown-timer');
-            timerDisplay.innerText = timeLeft;
-
+            authPanel.classList.add('lock-screen');
+            input.disabled = true;
+            let countdown = 30;
+            
             const interval = setInterval(() => {
-                timeLeft--;
-                timerDisplay.innerText = timeLeft;
-                if (timeLeft <= 0) {
+                authPanel.querySelector('.restricted-title').innerText = "SECURITY BREACH DETECTED";
+                errorBox.innerText = `Access Temporarily Locked. Retry in ${countdown}s`;
+                countdown--;
+                if (countdown < 0) {
                     clearInterval(interval);
-                    // Reset environment configuration post crash execution
-                    document.body.classList.remove('crushed');
-                    document.getElementById('lockout-screen').classList.remove('active');
-                    document.getElementById('page1').classList.add('active');
-                    document.getElementById('error-display').innerText = "";
-                    document.getElementById('hint-section').style.display = 'block';
-                    wrongAttempts = 0;
+                    currentWrongAttempts = 0;
+                    input.disabled = false;
+                    authPanel.classList.remove('lock-screen');
+                    authPanel.querySelector('.restricted-title').innerText = "ACCESS RESTRICTED";
+                    errorBox.innerText = "";
+                    input.value = "";
                 }
             }, 1000);
         }
 
-        function showHintContent() {
-            goToPage('1-hint');
+        document.getElementById('password-field').addEventListener('keydown', (e) => {
+            if(e.key === 'Enter') checkPassword();
+        });
+
+        /************************************************************************
+         * PAGE 1: MOBILE BOOT SEQUENCE SYSTLOGS
+         ************************************************************************/
+        function runBootSequence() {
+            const lines = document.querySelectorAll('#boot-log p');
+            lines.forEach(line => {
+                const delay = parseInt(line.getAttribute('data-delay'));
+                setTimeout(() => {
+                    line.classList.add('visible');
+                    AudioEngine.playTick();
+                }, delay);
+            });
+            setTimeout(() => {
+                document.getElementById('boot-btn').style.display = 'block';
+                AudioEngine.playUnlock();
+            }, 3400);
         }
 
-        function goBackToPassword() {
-            document.getElementById('page1-hint').classList.remove('active');
-            activeScreenId = 'page1';
-            document.getElementById('page1').classList.add('active');
+        /************************************************************************
+         * PAGE 2: MOBILE MODAL DASHBOARD HANDLERS (AUTO CENTER REGULATORS)
+         ************************************************************************/
+        function openWindow(winId) {
+            AudioEngine.playClick();
+            // Close any currently opened app to ensure smooth viewing space on mobile interfaces
+            document.querySelectorAll('.os-window').forEach(w => w.style.display = 'none');
+            const win = document.getElementById(winId);
+            win.style.display = 'flex';
         }
 
-        // PAGE 2 LOGIC: Typewriter implementation with Mechanical Audio Synthesis
-        function startTypewriter() {
-            const text = "FINALLY SAMARTH ,\nCONGRATS AND WELCOME ❤️";
-            const container = document.getElementById('typewriter');
-            let index = 0;
-            container.innerText = "";
-
-            // Custom sound engine for individual mechanical key strikes
-            function playTypewriterClick() {
-                try {
-                    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    
-                    osc.type = 'triangle';
-                    const pitchVariation = Math.random() * 40 - 20; 
-                    osc.frequency.setValueAtTime(140 + pitchVariation, audioCtx.currentTime);
-                    
-                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
-                    
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.04);
-                } catch (e) { console.log(e); }
-            }
-
-            // Custom sound engine for the vintage typewriter bell ring
-            function playTypewriterBell() {
-                try {
-                    if (!audioCtx) return;
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-                    
-                    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-                    
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.3);
-                } catch(e) {}
-            }
-
-            function type() {
-                if (index < text.length) {
-                    const char = text.charAt(index);
-                    container.innerText += char;
-                    
-                    if (char !== " " && char !== "\n") {
-                        playTypewriterClick();
-                    }
-                    
-                    if (char === "\n" || index === text.length - 1) {
-                        setTimeout(playTypewriterBell, 50);
-                    }
-
-                    index++;
-                    setTimeout(type, 110);
-                } else {
-                    document.getElementById('welcome-btn-container').style.display = 'block';
-                    container.style.borderRight = "none";
-                }
-            }
-            setTimeout(type, 600);
+        function closeWindow(winId) {
+            document.getElementById(winId).style.display = 'none';
         }
 
-        // PAGE 4 LOGIC: Conditional Routing Architecture
-        function handlePage4Response(choice) {
-            document.getElementById('page4').classList.remove('active');
-            if (choice === 'YES') {
-                activeScreenId = 'page5-yes';
-                document.getElementById('page5-yes').classList.add('active');
-            } else {
-                activeScreenId = 'page5-no';
-                document.getElementById('page5-no').classList.add('active');
-            }
-            document.getElementById('sneaky-skip').style.display = 'none';
-        }
-
-        // PAGE 6 LOGIC: Dodging Button Vector Engine
-        function dodgeButton() {
-            const btn = document.getElementById('evading-btn');
-            // Calculate pseudo-random bound settings
-            const x = Math.random() * (window.innerWidth - 160) - (window.innerWidth / 2 - 80);
-            const y = Math.random() * (window.innerHeight - 80) - (window.innerHeight / 2 - 40);
-            
-            btn.style.transform = `translate(${x}px, ${y}px)`;
-        }
-
-        // PAGE 7 LOGIC: Eligibility Mechanics and Red Prank Interceptor
-        function handleEligibility(answer) {
-            if (answer === 'AASTHA') {
-                goToPage('7-correct');
-            } else {
-                // Execute Fake Website Crash Sequence framework
-                document.getElementById('page7-prank').style.display = 'flex';
+        /************************************************************************
+         * TOUCH UTILITIES (COFFEE PROTOCOLS, METERS AND LAYERS)
+         ************************************************************************/
+        function coffeeStep(stepNum) {
+            if(stepNum === 1) {
+                document.getElementById('coffee-btn-1').style.display = 'none';
+                document.getElementById('coffee-btn-2').style.display = 'block';
+                document.getElementById('coffee-status-msg').innerText = "Powder Added. Awaiting Hot Water...";
+            } else if (stepNum === 2) {
+                document.getElementById('coffee-btn-2').style.display = 'none';
+                document.getElementById('coffee-btn-3').style.display = 'block';
+                document.getElementById('coffee-status-msg').innerText = "Water Infused. Prepared to extract.";
+            } else if (stepNum === 3) {
+                document.getElementById('coffee-btn-3').style.display = 'none';
+                document.getElementById('coffee-drop').style.display = 'block';
+                const fluid = document.getElementById('coffee-level');
+                fluid.style.height = '100%';
+                
+                let dripTicks = setInterval(() => AudioEngine.playTick(), 200);
                 
                 setTimeout(() => {
-                    document.getElementById('prank-text').style.display = 'block';
-                    document.getElementById('prank-continue-btn').style.display = 'inline-flex';
-                }, 2500);
+                    clearInterval(dripTicks);
+                    document.getElementById('coffee-drop').style.display = 'none';
+                    document.getElementById('coffee-btn-4').style.display = 'block';
+                    document.getElementById('coffee-status-msg').innerText = "Drip complete. Ready to serve.";
+                    AudioEngine.playUnlock();
+                }, 2000);
+            } else if (stepNum === 4) {
+                document.getElementById('coffee-btn-4').style.display = 'none';
+                document.getElementById('coffee-status-msg').innerHTML = "<span style='color:var(--primary);'>Developer Activated Successfully ☕</span><br><br><span style='color:#fbbf24;'>+1 Coffee Bean Collected</span>";
+                document.getElementById('bean-hidden-coffee').style.display = 'inline-block';
+                AudioEngine.playUnlock();
             }
         }
 
-        function exitPrank() {
-            document.getElementById('page7-prank').style.display = 'none';
-            document.getElementById('prank-text').style.display = 'none';
-            document.getElementById('prank-continue-btn').style.display = 'none';
-            goToPage('7-correct');
-        }
-
-        function switchToDarkModeAndProceed() {
-            document.body.classList.add('dark-mode');
-            goToPage(8);
-        }
-
-        // PAGE 13 LOGIC: Branch Responses and Asynchronous Delayed Reveals
-        function handleInvestigationBranch(branch) {
-            document.getElementById('page13').classList.remove('active');
-            if(branch === 'SUSPECT') {
-                activeScreenId = 'page13-suspect';
-                document.getElementById('page13-suspect').classList.add('active');
-            } else {
-                activeScreenId = 'page13-victim';
-                document.getElementById('page13-victim').classList.add('active');
-            }
-        }
-
-        function showFinalReveal() {
-            document.getElementById(activeScreenId).classList.remove('active');
-            activeScreenId = 'page13-reveal';
-            document.getElementById('page13-reveal').classList.add('active');
+        function runSimulation() {
+            const fill = document.getElementById('sim-progress');
+            const status = document.getElementById('sim-status-log');
+            fill.style.width = '0%';
+            status.innerText = "Coffee Meter: 0% -> Human Mode";
             
-            const lines = [
-                "The real culprit was never the suspect.",
-                "It was the conversation on 9 December.",
-                "Because that's where everything started. 🥹❤️"
+            setTimeout(() => {
+                fill.style.width = '50%';
+                status.innerText = "Coffee Meter: 50% -> Developer Mode";
+                AudioEngine.playTick();
+            }, 1000);
+
+            setTimeout(() => {
+                fill.style.width = '100%';
+                status.innerText = "Coffee Meter: 100% -> Coding Machine Activated";
+                AudioEngine.playUnlock();
+            }, 2200);
+        }
+
+        function revealLayers() {
+            document.getElementById('hidden-layers-box').style.display = 'block';
+            document.getElementById('layer-btn').style.display = 'none';
+            AudioEngine.playUnlock();
+        }
+
+        /************************************************************************
+         * MOBILE TARGET BEAN HUNT MODULE
+         ************************************************************************/
+        function collectBean(element) {
+            if(element.getAttribute('data-collected') === 'true') return;
+            element.setAttribute('data-collected', 'true');
+            element.style.opacity = '0.1';
+            element.style.pointerEvents = 'none';
+            
+            beansCollected++;
+            document.getElementById('bean-count-val').innerText = beansCollected;
+            AudioEngine.playUnlock();
+
+            if(beansCollected === totalBeans) {
+                setTimeout(() => {
+                    openWindow('win-bean-reward');
+                }, 400);
+            }
+        }
+
+        function openSecretAppViaBean() {
+            closeWindow('win-bean-reward');
+            openWindow('win-secret');
+        }
+
+        /************************************************************************
+         * COMMAND SHELL TERMINAL PROCESSING PARSER
+         ************************************************************************/
+        function setupTerminalInput() {
+            const tInput = document.getElementById('term-input');
+            tInput.addEventListener('keydown', function(e) {
+                if(e.key === 'Enter') {
+                    const cmd = tInput.value.trim().toLowerCase();
+                    processTerminalCommand(cmd);
+                    tInput.value = '';
+                    tInput.blur(); // dismiss mobile keyboard layout on send
+                }
+            });
+        }
+
+        function processTerminalCommand(cmd) {
+            const log = document.getElementById('term-log');
+            let output = '';
+            AudioEngine.playClick();
+
+            switch(cmd) {
+                case 'help':
+                    output = "Commands Loaded:<br>• whois asad<br>• skills<br>• secret<br>• brew coffee<br>• sudo find asad";
+                    break;
+                case 'whois asad':
+                    output = "Developer.<br>Coffee Enthusiast.<br>Idea Generator.";
+                    break;
+                case 'skills':
+                    output = "Coding<br>Problem Solving<br>Turning Coffee Into Software";
+                    break;
+                case 'secret':
+                    output = "<span style='color:var(--accent);'>Access Restricted</span>";
+                    break;
+                case 'brew coffee':
+                    output = "Brewing...<br>Coffee Ready ☕";
+                    break;
+                case 'sudo find asad':
+                    output = "<span style='color:var(--primary);'>Access Granted</span><br>Launching Hidden Story...";
+                    document.getElementById('term-secret-nav').style.display = 'block';
+                    AudioEngine.playUnlock();
+                    break;
+                case '':
+                    return;
+                default:
+                    output = `Unknown target: ${cmd}`;
+            }
+
+            log.innerHTML += `<div><span style="color:var(--primary);">os~#</span> ${cmd}</div>`;
+            log.innerHTML += `<div style="margin-bottom:8px; color:#cbd5e1;">${output}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        /************************************************************************
+         * FINAL RELEASES TERMINAL WRITER ENGINE
+         ************************************************************************/
+        function runFinalScreenSequence() {
+            const logBox = document.getElementById('final-log');
+            const finalLines = [
+                { text: "System Status:", delay: 400 },
+                { text: "Friendship: Active", delay: 1100 },
+                { text: "Coffee: Brewing", delay: 1800 },
+                { text: "Dating App: Not Built Yet", delay: 2500 },
+                { text: "", delay: 3000 },
+                { text: "Thank you for existing, Asad.", delay: 4400 },
+                { text: "", delay: 5400 },
+                { text: "END OF TRANSMISSION", delay: 6800 }
             ];
-            
-            const textBlock = document.getElementById('reveal-text-block');
-            textBlock.innerHTML = "";
-            
-            // Structured timeouts for multi-stage delayed reveal lines
-            setTimeout(() => {
-                textBlock.innerHTML += `<p style='margin-bottom:12px; font-weight:600;'>The real culprit was never the suspect.</p>`;
-            }, 400);
+
+            finalLines.forEach(line => {
+                setTimeout(() => {
+                    if (line.text !== "") {
+                        const p = document.createElement('p');
+                        p.innerText = line.text;
+                        logBox.appendChild(p);
+                        AudioEngine.playTick();
+                    }
+                }, line.delay);
+            });
 
             setTimeout(() => {
-                textBlock.innerHTML += `<p style='margin-bottom:12px; font-style:italic;'>Pause.</p>`;
-            }, 1900);
-            
-            setTimeout(() => {
-                textBlock.innerHTML += `<p style='margin-bottom:12px; font-weight:600;'>It was the conversation on 9 December.</p>`;
-            }, 3200);
-
-            setTimeout(() => {
-                textBlock.innerHTML += `<p style='margin-bottom:12px; font-style:italic;'>Pause.</p>`;
-            }, 4700);
-            
-            setTimeout(() => {
-                textBlock.innerHTML += `<p style='margin-bottom:12px; font-weight:700; color: #E6DCD2;'>Because that's where everything started.<br>🥹❤️</p>`;
-                document.getElementById('reveal-continue-btn').style.display = 'inline-flex';
-            }, 6000);
-        }
-
-        // PAGE 14 LOGIC: Secondary Narrative Plot Twists
-        function triggerBoomPlotTwist() {
-            document.getElementById('page14').classList.remove('active');
-            activeScreenId = 'page14-boom';
-            document.getElementById('page14-boom').classList.add('active');
-        }
-
-        function showTrueEvidence() {
-            document.getElementById('page14-boom').classList.remove('active');
-            activeScreenId = 'page14-final';
-            document.getElementById('page14-final').classList.add('active');
-        }
-
-        // PAGE 15 LOGIC: Evaluation Framework and Final State Sequence
-        function handleFinalQuestionAnswers() {
-            document.getElementById('page15').classList.remove('active');
-            activeScreenId = 'page15-eval';
-            document.getElementById('page15-eval').classList.add('active');
-            
-            const evalBlock = document.getElementById('eval-text-lines');
-            evalBlock.innerHTML = "";
-            
-            setTimeout(() => { evalBlock.innerHTML += `<p style='margin-bottom:8px;'>"Wrong."</p>`; }, 300);
-            setTimeout(() => { evalBlock.innerHTML += `<p style='margin-bottom:8px;'>"This website was never about love."</p>`; }, 1500);
-            setTimeout(() => { evalBlock.innerHTML += `<p style='margin-bottom:8px;'>"It was never about mysteries."</p>`; }, 2700);
-            setTimeout(() => { evalBlock.innerHTML += `<p style='margin-bottom:8px;'>"And it was definitely not about Paani Chahiye."</p>`; }, 3900);
-            setTimeout(() => { evalBlock.innerHTML += `<p style='margin-bottom:12px; font-style:italic; opacity:0.6;'>Pause...</p>`; }, 5100);
-            setTimeout(() => { 
-                evalBlock.innerHTML += `<p style='font-size:22px; font-weight:700; color:#E6DCD2;'>"It was about you." ❤️<br><br>😭😭</p>`; 
-                document.getElementById('eval-continue-btn').style.display = 'inline-flex';
-            }, 6400);
-        }
-
-        // PAGE 16 SUB-SCREEN LOGIC
-        function revealFileNameScreen() {
-            document.getElementById('page16').classList.remove('active');
-            activeScreenId = 'page16-sub';
-            document.getElementById('page16-sub').classList.add('active');
-        }
-
-        // SNEAKY SKIP ROUTE PUNISHMENT PARADIGM
-        function triggerSkipPunishment() {
-            document.getElementById(activeScreenId).classList.remove('active');
-            document.getElementById('sneaky-skip').style.display = 'none';
-            document.getElementById('skip-punishment-screen').classList.add('active');
-        }
-
-        // Return from punishment state
-        function returnFromSkipPunishment() {
-            document.getElementById('skip-punishment-screen').classList.remove('active');
-            document.getElementById(activeScreenId).classList.add('active');
-            document.getElementById('sneaky-skip').style.display = 'block';
+                const cursorBlock = document.createElement('div');
+                cursorBlock.style.marginTop = "15px";
+                cursorBlock.innerHTML = '«»<span class="cursor-blink">&nbsp;</span>';
+                logBox.appendChild(cursorBlock);
+                AudioEngine.playError();
+            }, 8000);
         }
     </script>
 </body>
